@@ -18,24 +18,60 @@ public class Warehouse {
     
     
     // Many-to-many mapping annotation
-    @ManyToMany
-    @JoinTable(
-        name = "product_warehouse",
-        joinColumns = @JoinColumn(name = "warehouse_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @OneToMany(mappedBy = "warehouse", targetEntity = ProductWarehouse.class) //mapped by warehose targetentitty productwarehouse.class
+    
+    private List<ProductWarehouse> productWarehouse;
 
 
     public Warehouse() {
     }
 
 
-    public Warehouse(int warehouseId, String name, String location, List<Product> products) {
+    public Warehouse(int warehouseId, String name, String location, List<ProductWarehouse> productWarehouse) {
       this.warehouseId = warehouseId;
       this.name = name;
       this.location = location;
-      this.products = products;
+      this.productWarehouse= productWarehouse;
+    }
+
+
+    public int getWarehouseId() {
+      return warehouseId;
+    }
+
+
+    public void setWarehouseId(int warehouseId) {
+      this.warehouseId = warehouseId;
+    }
+
+
+    public String getName() {
+      return name;
+    }
+
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+
+    public String getLocation() {
+      return location;
+    }
+
+
+    public void setLocation(String location) {
+      this.location = location;
+    }
+
+
+    public List<ProductWarehouse> getProductWarehouse() {
+      return productWarehouse;
+    }
+
+
+    public void setProducts(List<ProductWarehouse> productWarehouse) {
+      this.productWarehouse = productWarehouse;
     }
     
     

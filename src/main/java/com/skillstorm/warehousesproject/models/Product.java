@@ -23,8 +23,8 @@ public class Product {
    
     
     // Many-to-many mapping annotation
-    @ManyToMany(mappedBy = "products")
-    private List<Warehouse> warehouses;
+    @OneToMany(mappedBy = "product", targetEntity = ProductWarehouse.class)
+    private List<ProductWarehouse> productWarehouse;
 
 
 
@@ -33,12 +33,12 @@ public class Product {
 
 
 
-    public Product(int productId, String name, String description, double price, List<Warehouse> warehouses) {
+    public Product(int productId, String name, String description, double price, List<ProductWarehouse> productWarehouse) {
       this.productId = productId;
       this.name = name;
       this.description = description;
       this.price = price;
-      this.warehouses = warehouses;
+      this.productWarehouse = productWarehouse;
     }
 
 
@@ -91,17 +91,20 @@ public class Product {
 
 
 
-    public List<Warehouse> getWarehouses() {
-      return warehouses;
+    public List<ProductWarehouse> getProductWarehouse() {
+      return productWarehouse;
     }
 
 
 
-    public void setWarehouses(List<Warehouse> warehouses) {
-      this.warehouses = warehouses;
+    public void setProductWarehouse(List<ProductWarehouse> productWarehouse) {
+      this.productWarehouse = productWarehouse;
     }
+
+
+
+   
     
     
-    // Add constructor, getters, setters, and other methods as needed
 
 }
