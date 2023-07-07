@@ -18,8 +18,7 @@ public class Warehouse {
     
     
     // Many-to-many mapping annotation
-    @OneToMany(mappedBy = "warehouse", targetEntity = ProductWarehouse.class) //mapped by warehose targetentitty productwarehouse.class
-    
+    @OneToMany(mappedBy = "warehouse", targetEntity = ProductWarehouse.class)
     private List<ProductWarehouse> productWarehouse;
 
 
@@ -70,7 +69,7 @@ public class Warehouse {
     }
 
 
-    public void setProducts(List<ProductWarehouse> productWarehouse) {
+    public void setProductWarehouse(List<ProductWarehouse> productWarehouse) {
       this.productWarehouse = productWarehouse;
     }
     
