@@ -1,0 +1,68 @@
+
+  .navbar {
+    background-color: #e3f2fd;
+    display: flex;
+    justify-content: center;
+  }
+
+  th.Wheader {
+    text-align: center;
+  }
+
+  .table {
+    margin-top: 30px;
+    margin-left: 20%;
+  }
+  td, th {
+    background-color: #e3f2fd !important;
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  table {
+    border-collapse: collapse;
+  }
+
+  .space{
+    margin: 5px;
+  }
+
+  #warehouseForm {
+    background-color: #e3f2fd;
+    padding: 10px;
+    margin-left: 50%;
+    margin-top: 30px;
+    border: 1px solid black;
+  }
+
+  #productForm {
+      background-color: #e3f2fd;
+      padding: 10px;
+      margin-left: 50%;
+      margin-top: 30px;
+      border: 1px solid black;
+  }
+  
+ .wbutton{
+    margin-top: 10px;
+
+    display: block;
+
+  } 
+
+  .aHeader {
+    text-align: center;
+    /* text-decoration:solid; */
+  } 
+
+
+  .col-lg-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .name {
+    margin-bottom: 5px;
+  }

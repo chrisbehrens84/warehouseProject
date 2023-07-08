@@ -24,33 +24,112 @@ document.addEventListener("DOMContentLoaded", function () {
 //Fetch all warehouses from the API
 async function loadWarehouses() {
   await fetch("/warehouses")
-      .then(response => response.json())
-      .then(data => {
-          let warehouseList = document.getElementById("warehouseList");
-          warehouseList.innerHTML = "";
-          data.forEach(warehouse => {
-              let warehouseItem = document.createElement("div");
-              warehouseItem.innerText = `${warehouse.name} - ${warehouse.location}`;
-              warehouseList.appendChild(warehouseItem);
-          });
+    .then(response => response.json())
+    .then(data => {
+      let warehouseTableBody = document.getElementById("warehouseTableBody");
+      warehouseTableBody.innerHTML = "";
+      data.forEach(warehouse => {
+        let row = document.createElement("tr");
+        let nameCell = document.createElement("td");
+        let locationCell = document.createElement("td");
+        nameCell.innerText = warehouse.name;
+        locationCell.innerText = warehouse.location;
+        let actionsCell = document.createElement("td");
+        
+        let updateButton = document.createElement("button");
+        updateButton.innerText = "Update";
+        updateButton.classList.add("btn", "btn-primary", "space");
+        updateButton.addEventListener("click", () => {
+          // Perform update logic for the warehouse
+          console.log("Update button clicked for warehouse:", warehouse);
+        });
+        
+      
+
+
+        let deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.classList.add("btn", "btn-primary", "delete-button");
+        deleteButton.addEventListener("click", () => {
+          // Perform delete logic for the warehouse
+          console.log("Delete button clicked for warehouse:", warehouse);
+        });
+        
+        actionsCell.appendChild(updateButton);
+        actionsCell.appendChild(deleteButton);
+        
+        row.appendChild(nameCell);
+        row.appendChild(locationCell);
+        row.appendChild(actionsCell);
+        
+        warehouseTableBody.appendChild(row);
       });
+    })
+    .catch(error => {
+      console.error("Error loading warehouses:", error);
+    });
 }
 
-
-// Fetch all products from the API
 async function loadProducts() {
   await fetch("/products")
-      .then(response => response.json())
-      .then(data => {
-          let productList = document.getElementById("productList");
-          productList.innerHTML = "";
-          data.forEach(product => {
-              let productItem = document.createElement("div");
-              productItem.innerText = `${product.name} - $${product.price}`;
-              productList.appendChild(productItem);
-          });
+    .then(response => response.json())
+    .then(data => {
+      let productTableBody = document.getElementById("productTableBody");
+      productTableBody.innerHTML = "";
+      data.forEach(product => {
+        let row = document.createElement("tr");
+        let productCell = document.createElement("td");
+        let priceCell = document.createElement("td");
+        productCell.innerText = product.name;
+        priceCell.innerText = product.price;
+        let actionsCell = document.createElement("td");
+        
+        let updateButton = document.createElement("button");
+        updateButton.innerText = "Update";
+        updateButton.classList.add("btn", "btn-primary", "space");
+        updateButton.addEventListener("click", () => {
+          // Perform update logic for the warehouse
+          console.log("Update button clicked for product:", product);
+        });
+        
+    
+        let deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.classList.add("btn", "btn-primary", "delete-button");
+        deleteButton.addEventListener("click", () => {
+          // Perform delete logic for the warehouse
+          console.log("Delete button clicked for product:", product);
+        });
+        
+        actionsCell.appendChild(updateButton);
+        actionsCell.appendChild(deleteButton);
+        
+        row.appendChild(productCell);
+        row.appendChild(priceCell);
+        row.appendChild(actionsCell);
+        
+        productTableBody.appendChild(row);
       });
+    })
+    .catch(error => {
+      console.error("Error loading products:", error);
+    });
 }
+
+// // Fetch all products from the API
+// async function loadProducts() {
+//   await fetch("/products")
+//       .then(response => response.json())
+//       .then(data => {
+//           let productList = document.getElementById("productList");
+//           productList.innerHTML = "";
+//           data.forEach(product => {
+//               let productItem = document.createElement("div");
+//               productItem.innerText = `${product.name} - $${product.price}`;
+//               productList.appendChild(productItem);
+//           });
+//       });
+// }
 
 
 async function loadInventory() {
