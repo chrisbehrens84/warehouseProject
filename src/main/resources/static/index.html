@@ -1,71 +1,118 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Warehouse Inventory Management</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <!-- 
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Warehouse Inventory Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link rel="stylesheet" href="index.css" />
+  <!-- 
     <script src="index.js" defer></script> -->
-  </head>
-  <body>
-    <h1>Golf Ballz Inventory Management</h1>
+</head>
 
-    <h2>Warehouses</h2>
-    <div id="warehouseList">
-      <!-- Warehouses will be dynamically populated here -->
+<body>
+
+  <nav class="navbar" style="background-color: #e3f2fd;">
+    <!-- Navbar content -->
+    <h1 class="header">Golf Ballz Inventory Management</h1>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <table id="warehouseTable" class="table table-primary table-hoover">
+          <thead>
+            <tr>
+              <th colspan="3" class="Wheader">Warehouses</th>
+            </tr>
+            <tr>
+              <th>Warehouse Name</th>
+              <th>Warehouse Location</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="warehouseTableBody"></tbody>
+        </table>
+      </div>
+      <div class="col-lg-4">
+        <form id="warehouseForm">
+          <h5 class="aHeader"><strong>Add Warehouse</strong></h5>
+          <label class="aHeader" for="warehouseName">Name : &nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <input class="name" type="text" id="warehouseName" required />
+          <br />
+          <label for="warehouseLocation">Location :&nbsp;</label>
+          <input  type="text" id="warehouseLocation" required />
+          <br />
+          <input class="btn btn-primary aHeader wbutton" type="submit" value="Add Warehouse" />
+        </form>
+      </div>
     </div>
-
-    <h2>Products</h2>
-    <div id="productList">
-      <!-- Products will be dynamically populated here -->
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <table id="productTable" class="table table-primary table-hoover">
+          <thead>
+            <tr>
+              <th colspan="3" class="Wheader">Products</th>
+            </tr>
+            <tr>
+              <th>Product</th>
+              <th>Cost</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody"></tbody>
+        </table>
+      </div>
+      <div class="col-lg-4">
+        <form id="productForm">
+          <h5 class="aHeader"><strong>Add Product</strong></h5>
+          <label class="aHeader" for="productName">Product : </label>
+          <input class="name" type="text" id="productName" required />
+          <br />
+          <label for="productPrice">Price:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <input type="number" step="0.01" id="productPrice" required />
+          <label for="productPrice">Price :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <br />
+          <input class="btn btn-primary aHeader wbutton" type="submit" value="Add product" />
+        </form>
+      </div>
     </div>
+  </div>
+  
+ 
+<!--   
+  <h2>Add Product</h2>
+  <form id="productForm">
+    <label for="productName">Name:</label>
+    <input type="text" id="productName" required />
+    <br />
+    <label for="productPrice">Price:</label>
+    <input type="number" step="0.01" id="productPrice" required />
+    <br />
+    <input type="submit" value="Add Product" />
+  </form> -->
+  
+  <form id="inventoryForm">
+    <h2>Add Product to Warehouse Inventory</h2>
+    <label for="warehouseSelect">Warehouse:</label>
+    <select id="warehouseSelect"></select>
+    <br />
+    <label for="productSelect">Product:</label>
+    <select id="productSelect"></select>
+    <br />
+    <label for="inventoryQuantity">Quantity:</label>
+    <input type="number" id="inventoryQuantity" required />
+    <br />
+    <input type="submit" value="Add to Inventory" />
+  </form>
+  
+  <script src="index.js"></script>
+</body>
 
-    <h2>Inventory</h2>
-    <div id="inventoryList">
-      <!-- Inventory items will be dynamically populated here -->
-    </div>
 
-    <h2>Add Warehouse</h2>
-    <form id="warehouseForm">
-      <label for="warehouseName">Name:</label>
-      <input type="text" id="warehouseName" required />
-      <br />
-      <label for="warehouseLocation">Location:</label>
-      <input type="text" id="warehouseLocation" required />
-      <br />
-      <input type="submit" value="Add Warehouse" />
-    </form>
 
-    <h2>Add Product</h2>
-    <form id="productForm">
-      <label for="productName">Name:</label>
-      <input type="text" id="productName" required />
-      <br />
-      <label for="productPrice">Price:</label>
-      <input type="number" step="0.01" id="productPrice" required />
-      <br />
-      <input type="submit" value="Add Product" />
-    </form>
 
-    <form id="inventoryForm">
-      <h2>Add Product to Warehouse Inventory</h2>
-      <label for="warehouseSelect">Warehouse:</label>
-      <select id="warehouseSelect"></select>
-      <br />
-      <label for="productSelect">Product:</label>
-      <select id="productSelect"></select>
-      <br />
-      <label for="inventoryQuantity">Quantity:</label>
-      <input type="number" id="inventoryQuantity" required />
-      <br />
-      <input type="submit" value="Add to Inventory" />
-    </form>
-
-    <script src="index.js"></script>
-  </body>
 </html>
