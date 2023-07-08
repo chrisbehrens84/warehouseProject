@@ -1,31 +1,37 @@
 package com.skillstorm.warehousesproject.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.skillstorm.warehousesproject.models.Warehouse;
 import com.skillstorm.warehousesproject.services.WarehouseService;
 
+import java.util.List;
+
+
 @RestController
 @RequestMapping("/warehouses")
 public class WarehouseController {
-   @Autowired WarehouseService warehouseService;
-  // @Autowired WarehouseService warehouseService;
-  // @Autowired ProductWarehouseService productwarehouseService;
 
+    private final WarehouseService warehouseService;
 
-  @GetMapping()
-  public ResponseEntity<List<Warehouse>> findAllProducts(){
-    List<Warehouse> warehouses = warehouseService.findAllWarehouses();
+    @Autowired
+    public WarehouseController(WarehouseService warehouseService) {
+        this.warehouseService = warehouseService;
+    }
 
-    
-    return new ResponseEntity<List<Warehouse>>(warehouses, HttpStatus.OK);
-  }
+    @GetMapping
+    public List<Warehouse> getAllWarehouses() {
+        return warehouseService.getAllWarehouses();
+    }
 
+    @PostMapping
+    public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
+        return warehouseService.createWarehouse(warehouse);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteWarehouse(@PathVariable("id") Long id) {
+        warehouseService.deleteWarehouse(id);
+    }
 }

@@ -8,11 +8,27 @@ import org.springframework.stereotype.Service;
 import com.skillstorm.warehousesproject.models.Warehouse;
 import com.skillstorm.warehousesproject.repositories.WarehouseRepository;
 
+
+
 @Service
 public class WarehouseService {
-  @Autowired WarehouseRepository warehouseRepository;
 
-  public List<Warehouse> findAllWarehouses(){
-    return warehouseRepository.findAll();
-  }
+    private final WarehouseRepository warehouseRepository;
+
+    @Autowired
+    public WarehouseService(WarehouseRepository warehouseRepository) {
+        this.warehouseRepository = warehouseRepository;
+    }
+
+    public List<Warehouse> getAllWarehouses() {
+        return warehouseRepository.findAll();
+    }
+
+    public Warehouse createWarehouse(Warehouse warehouse) {
+        return warehouseRepository.save(warehouse);
+    }
+
+    public void deleteWarehouse(Long id) {
+        warehouseRepository.deleteById(id);
+    }
 }

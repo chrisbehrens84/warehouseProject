@@ -1,77 +1,64 @@
 package com.skillstorm.warehousesproject.models;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "warehouses")
 public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "warehouse_id")
-    private int warehouseId;
-    
-    @Column(name = "name")
-    private String name;
-    
-    @Column(name = "location")
-    private String location;
-    
-    
-    // Many-to-many mapping annotation
-    @OneToMany(mappedBy = "warehouse", targetEntity = ProductWarehouse.class)
-    private List<ProductWarehouse> productWarehouse;
+    private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String location;
+
+    @OneToMany(mappedBy = "warehouse")
+    private List<Inventory> inventories;
 
     public Warehouse() {
     }
 
-
-    public Warehouse(int warehouseId, String name, String location, List<ProductWarehouse> productWarehouse) {
-      this.warehouseId = warehouseId;
+    public Warehouse(Long id, String name, String location, List<Inventory> inventories) {
+      this.id = id;
       this.name = name;
       this.location = location;
-      this.productWarehouse= productWarehouse;
+      this.inventories = inventories;
     }
 
-
-    public int getWarehouseId() {
-      return warehouseId;
+    public Long getId() {
+      return id;
     }
 
-
-    public void setWarehouseId(int warehouseId) {
-      this.warehouseId = warehouseId;
+    public void setId(Long id) {
+      this.id = id;
     }
-
 
     public String getName() {
       return name;
     }
 
-
     public void setName(String name) {
       this.name = name;
     }
-
 
     public String getLocation() {
       return location;
     }
 
-
     public void setLocation(String location) {
       this.location = location;
     }
 
-
-    public List<ProductWarehouse> getProductWarehouse() {
-      return productWarehouse;
+    public List<Inventory> getInventories() {
+      return inventories;
     }
 
-
-    public void setProductWarehouse(List<ProductWarehouse> productWarehouse) {
-      this.productWarehouse = productWarehouse;
+    public void setInventories(List<Inventory> inventories) {
+      this.inventories = inventories;
     }
-    
-    
+
+   
 }

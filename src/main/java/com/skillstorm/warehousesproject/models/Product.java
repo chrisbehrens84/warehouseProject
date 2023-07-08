@@ -1,110 +1,63 @@
 package com.skillstorm.warehousesproject.models;
-import java.util.List;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private int productId;
-    
-    @Column(name = "name")
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
-    
-    @Column(name = "description")
-    private String description;
-    
-    @Column(name = "price")
+
+    @Column(nullable = false)
     private double price;
-    
-   
-    
-    // Many-to-many mapping annotation
-    @OneToMany(mappedBy = "product", targetEntity = ProductWarehouse.class)
-    private List<ProductWarehouse> productWarehouse;
 
-
+    @OneToMany(mappedBy = "product")
+    private List<Inventory> inventories;
 
     public Product() {
     }
 
-
-
-    public Product(int productId, String name, String description, double price, List<ProductWarehouse> productWarehouse) {
-      this.productId = productId;
+    public Product(Long id, String name, double price, List<Inventory> inventories) {
+      this.id = id;
       this.name = name;
-      this.description = description;
       this.price = price;
-      this.productWarehouse = productWarehouse;
+      this.inventories = inventories;
     }
 
-
-
-    public int getProductId() {
-      return productId;
+    public Long getId() {
+      return id;
     }
 
-
-
-    public void setProductId(int productId) {
-      this.productId = productId;
+    public void setId(Long id) {
+      this.id = id;
     }
-
-
 
     public String getName() {
       return name;
     }
 
-
-
     public void setName(String name) {
       this.name = name;
     }
-
-
-
-    public String getDescription() {
-      return description;
-    }
-
-
-
-    public void setDescription(String description) {
-      this.description = description;
-    }
-
-
 
     public double getPrice() {
       return price;
     }
 
-
-
     public void setPrice(double price) {
       this.price = price;
     }
 
-
-
-    public List<ProductWarehouse> getProductWarehouse() {
-      return productWarehouse;
+    public List<Inventory> getInventories() {
+      return inventories;
     }
 
-
-
-    public void setProductWarehouse(List<ProductWarehouse> productWarehouse) {
-      this.productWarehouse = productWarehouse;
+    public void setInventories(List<Inventory> inventories) {
+      this.inventories = inventories;
     }
-
-
-
-   
-    
-    
 
 }
