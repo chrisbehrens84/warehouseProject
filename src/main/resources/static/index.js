@@ -116,32 +116,48 @@ async function loadProducts() {
     });
 }
 
-// // Fetch all products from the API
-// async function loadProducts() {
-//   await fetch("/products")
-//       .then(response => response.json())
-//       .then(data => {
-//           let productList = document.getElementById("productList");
-//           productList.innerHTML = "";
-//           data.forEach(product => {
-//               let productItem = document.createElement("div");
-//               productItem.innerText = `${product.name} - $${product.price}`;
-//               productList.appendChild(productItem);
-//           });
-//       });
-// }
-
-
 async function loadInventory() {
-  let inventoryList = document.getElementById("inventoryList");
-  inventoryList.innerHTML = "";
   await fetch("/inventory")
     .then(response => response.json())
     .then(data => {
-      data.forEach(item => {
-        let inventoryItem = document.createElement("div");
-        inventoryItem.innerText = `${item[1]} - ${item[2]} - ${item[3]}`;
-        inventoryList.appendChild(inventoryItem);
+      let inventoryTableBody = document.getElementById("inventoryTableBody");
+      inventoryTableBody.innerHTML = "";
+      data.forEach(inventory => {
+        let row = document.createElement("tr");
+        let inventoryCell = document.createElement("td");
+        let productCell = document.createElement("td");
+        let quantityCell = document.createElement("td");
+        let actionsCell = document.createElement("td");
+        inventoryCell.innerText = inventory[1];
+        productCell.innerText = inventory[2];
+        quantityCell.innerText = inventory[3];
+        
+        let updateButton = document.createElement("button");
+        updateButton.innerText = "Update";
+        updateButton.classList.add("btn", "btn-primary", "space");
+        updateButton.addEventListener("click", () => {
+          // Perform update logic for the warehouse
+          console.log("Update button clicked for inventory:", inventory);
+        });
+        
+    
+        let deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.classList.add("btn", "btn-primary", "delete-button");
+        deleteButton.addEventListener("click", () => {
+          // Perform delete logic for the warehouse
+          console.log("Delete button clicked for inventory:", inventory);
+        });
+        
+        actionsCell.appendChild(updateButton);
+        actionsCell.appendChild(deleteButton);
+        
+        row.appendChild(inventoryCell);
+        row.appendChild(productCell);
+        row.appendChild(quantityCell);
+        row.appendChild(actionsCell);
+        
+        inventoryTableBody.appendChild(row);
       });
     })
     .catch(error => {
@@ -149,8 +165,9 @@ async function loadInventory() {
     });
 }
 
+
+
 function addWarehouse() {
-  console.log("Hello")
   let warehouseName = document.getElementById("warehouseName").value;
   let warehouseLocation = document.getElementById("warehouseLocation").value;
 
@@ -190,10 +207,9 @@ function addProduct() {
 
 
  function addDropdown() {
-  console.log("called")
   let warehouseSelect = document.getElementById("warehouseSelect");
   let productSelect = document.getElementById("productSelect");
-  let quantity = document.getElementById("inventoryQuantity").value;
+  // let quantity = document.getElementById("inventoryQuantity").value;
 
   // Fetch warehouse options
    fetch("/warehouses")

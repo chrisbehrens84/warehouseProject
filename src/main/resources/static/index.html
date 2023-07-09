@@ -7,15 +7,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="stylesheet" href="index.css" />
-  <!-- 
-    <script src="index.js" defer></script> -->
+
+    <script src="index.js" defer></script> 
 </head>
 
 <body>
 
   <nav class="navbar" style="background-color: #e3f2fd;">
     <!-- Navbar content -->
-    <h1 class="header">Golf Ballz Inventory Management</h1>
+    <h1 class="header">Golf Ball Inventory Management</h1>
   </nav>
   <div class="container-fluid">
     <div class="row">
@@ -38,11 +38,13 @@
         <form id="warehouseForm">
           <h5 class="aHeader"><strong>Add Warehouse</strong></h5>
           <label class="aHeader" for="warehouseName">Name : &nbsp;&nbsp;&nbsp;&nbsp;</label>
+          </br>
           <input class="name" type="text" id="warehouseName" required />
-          <br />
+          <br/>
           <label for="warehouseLocation">Location :&nbsp;</label>
+          <br/>
           <input  type="text" id="warehouseLocation" required />
-          <br />
+          <br/>
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add Warehouse" />
         </form>
       </div>
@@ -70,11 +72,13 @@
         <form id="productForm">
           <h5 class="aHeader"><strong>Add Product</strong></h5>
           <label class="aHeader" for="productName">Product : </label>
+          <br/>
           <input class="name" type="text" id="productName" required />
           <br />
           <label for="productPrice">Price:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          </br>
           <input type="number" step="0.01" id="productPrice" required />
-          <label for="productPrice">Price :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          
           <br />
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add product" />
         </form>
@@ -82,6 +86,44 @@
     </div>
   </div>
   
+  <div class="container-fluid bottom">
+    <div class="row">
+      <div class="col-lg-6">
+        <table id="InventoryTable" class="table table-primary table-hoover">
+          <thead>
+            <tr>
+              <th colspan="4" class="Wheader">Warehouse Inventory</th>
+            </tr>
+            <tr>
+              <th>Warehouse</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody"></tbody>
+        </table>
+      </div>
+      <div class="col-lg-4">
+        <form id="inventoryForm">
+          <h5 class="aHeader"><strong>Add Inventory to Warehouse</strong></h5>
+          <label class="aHeader" for="warehouseSelect">Warehouse : </label>
+          <br/>
+          <select class="name"  id="warehouseSelect"></select>
+          <br />
+          <label for="productSelect">Product :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          </br>
+          <select type="number" step="0.01" id="productSelect"></select>
+          <br />
+          <label for="inventoryQuantity">Quantity:</label>
+          </br>
+          <input type="number" id="inventoryQuantity" required />
+          <br />
+          <input class="btn btn-primary aHeader wbutton" type="submit" value="Add inventory" />
+        </form>
+      </div>
+    </div>
+  </div>
  
 <!--   
   <h2>Add Product</h2>
@@ -95,24 +137,4 @@
     <input type="submit" value="Add Product" />
   </form> -->
   
-  <form id="inventoryForm">
-    <h2>Add Product to Warehouse Inventory</h2>
-    <label for="warehouseSelect">Warehouse:</label>
-    <select id="warehouseSelect"></select>
-    <br />
-    <label for="productSelect">Product:</label>
-    <select id="productSelect"></select>
-    <br />
-    <label for="inventoryQuantity">Quantity:</label>
-    <input type="number" id="inventoryQuantity" required />
-    <br />
-    <input type="submit" value="Add to Inventory" />
-  </form>
-  
-  <script src="index.js"></script>
-</body>
-
-
-
-
 </html>
