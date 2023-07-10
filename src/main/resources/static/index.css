@@ -61,7 +61,21 @@
       margin-top: 30px;
       border: 1px solid black;
   }
-  
+
+  #updateForm {
+    background-color: lightcoral;
+    padding: 10px;
+    margin-left: 50%;
+    margin-top: 30px;
+    border: 1px solid black;
+}
+
+.ubutton{
+  margin-top: 10px;
+  width: 80px;
+  height: 40px
+}  
+
  .wbutton{
     margin-top: 10px;
 
