@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       addInventory();
   });
+
+  
 });
 
 //Fetch all warehouses from the API
@@ -39,9 +41,23 @@ async function loadWarehouses() {
         let updateButton = document.createElement("button");
         updateButton.innerText = "Update";
         updateButton.classList.add("btn", "btn-primary", "space");
+        updateButton.warehouse = warehouse;
+
+
+        function populateUpdateForm(warehouse) {
+          // Populate the form with warehouse name and location
+          document.getElementById("updateWarehouseName").value = warehouse.name;
+          document.getElementById("updateWarehouseLocation").value = warehouse.location;
+          document.getElementById("updateFormContainer").style.display = "block";
+
+        document.getElementById("updateForm").addEventListener("submit", handleUpdateFormSubmit);
+
+        }
+
         updateButton.addEventListener("click", () => {
           // Perform update logic for the warehouse
           console.log("Update button clicked for warehouse:", warehouse);
+          populateUpdateForm(warehouse);
         });
         
       
@@ -51,10 +67,61 @@ async function loadWarehouses() {
         deleteButton.innerText = "Delete";
         deleteButton.classList.add("btn", "btn-primary", "delete-button");
         deleteButton.addEventListener("click", () => {
-          // Perform delete logic for the warehouse
-          console.log("Delete button clicked for warehouse:", warehouse);
+          // delete logic for the warehouse
+            // check to see if warehouse has inventory
+          if (warehouse.inventories.length > 0){
+            alert("Cannot Delete, " + warehouse.name +  " has inventory")
+          }
+          else {
+            // Prompt for confirmation before deleting
+            if (confirm("Are you sure you want to delete this warehouse?")) {
+              // Delete the warehouse
+              fetch(`/warehouses/${warehouse.id}`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              })
+                .then(() => {
+                  // Reload the warehouses after delete
+                  loadWarehouses();
+                })
+                .catch(error => {
+                  console.error("Error deleting warehouse:", error);
+                });
+            }
+          }
+
         });
+        function handleUpdateFormSubmit(event) {
+          event.preventDefault();
+          
+          // Retrieve the updated name and location values
+          let warehouseId = warehouse.id;
+          let warehouseName = document.getElementById("updateWarehouseName").value;
+          let warehouseLocation = document.getElementById("updateWarehouseLocation").value;
         
+          // Send a PUT request to update the warehouse
+          console.log(warehouseId);
+          fetch(`/warehouses/${warehouseId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: warehouseName, location: warehouseLocation })
+          })
+            .then(() => {
+              // Hide the update form and display the warehouse list
+              document.getElementById("updateFormContainer").style.display = "none";
+         
+        
+              // Reload the warehouses after update
+              loadWarehouses();
+            })
+            .catch(error => {
+              console.error("Error updating warehouse:", error);
+            });
+        }
         actionsCell.appendChild(updateButton);
         actionsCell.appendChild(deleteButton);
         
@@ -69,6 +136,9 @@ async function loadWarehouses() {
       console.error("Error loading warehouses:", error);
     });
 }
+
+// Add event listener to the update form submit button
+//document.getElementById("updateForm").addEventListener("submit", handleUpdateFormSubmit);
 
 async function loadProducts() {
   await fetch("/products")
@@ -97,7 +167,7 @@ async function loadProducts() {
         deleteButton.innerText = "Delete";
         deleteButton.classList.add("btn", "btn-primary", "delete-button");
         deleteButton.addEventListener("click", () => {
-          // Perform delete logic for the warehouse
+          // delete logic for the warehouse
           console.log("Delete button clicked for product:", product);
         });
         
@@ -182,6 +252,7 @@ function addWarehouse() {
           document.getElementById("warehouseName").value = "";
           document.getElementById("warehouseLocation").value = "";
           loadWarehouses();
+          addDropdown();
       });
 }
 
@@ -262,3 +333,7 @@ function addProduct() {
         loadInventory();
       });
   }
+
+
+
+  

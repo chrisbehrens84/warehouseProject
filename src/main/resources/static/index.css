@@ -8,10 +8,13 @@
   th.Wheader {
     text-align: center;
   }
+  .lm {
+    margin-left: 10%
+  }
 
   .table {
     margin-top: 30px;
-    margin-left: 20%; 
+    /* margin-left: 20%;   */
    
     table-layout: fixed;
   }
@@ -20,11 +23,11 @@
     border: 1px solid black;
     padding: 8px;
     text-align: center;
-  }
+  } */
 
   table td,
   table th {
-    width: 33.33%; /* Adjust this value as needed */
+    width: 33.33%; 
   }
 
   table {
@@ -68,7 +71,7 @@
 
   .aHeader {
     text-align: center;
-    /* text-decoration:solid; */
+   
   } 
 
 

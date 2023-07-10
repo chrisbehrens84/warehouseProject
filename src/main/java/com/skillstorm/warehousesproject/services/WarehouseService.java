@@ -3,6 +3,7 @@ package com.skillstorm.warehousesproject.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.skillstorm.warehousesproject.models.Warehouse;
@@ -31,4 +32,21 @@ public class WarehouseService {
     public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);
     }
+
+    public Warehouse getWarehouseById(Long id) throws NotFoundException {
+        return warehouseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException());
+    }
+
+    public Warehouse updateWarehouse(Long id, Warehouse updatedWarehouse) throws NotFoundException {
+        Warehouse existingWarehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException());
+
+        existingWarehouse.setName(updatedWarehouse.getName());
+        existingWarehouse.setLocation(updatedWarehouse.getLocation());
+
+        return warehouseRepository.save(existingWarehouse);
+    }
+
+
 }
