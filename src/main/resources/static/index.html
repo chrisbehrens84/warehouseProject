@@ -17,7 +17,7 @@
     <!-- Navbar content -->
     <h1 class="header">Golf Ball Inventory Management</h1>
   </nav>
-  <div class="container-fluid">
+  <div class="container-fluid lm">
     <div class="row">
       <div class="col-lg-6">
         <table id="warehouseTable" class="table table-primary table-hoover">
@@ -47,11 +47,23 @@
           <br/>
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add Warehouse" />
         </form>
+        <div id="updateFormContainer" style="display: none;">
+  <form id="updateForm">
+    <input type="hidden" id="updateWarehouseId" />
+    <label for="updateWarehouseName">Name:</label>
+    <input type="text" id="updateWarehouseName" required />
+    <br />
+    <label for="updateWarehouseLocation">Location:</label>
+    <input type="text" id="updateWarehouseLocation" required />
+    <br />
+    <input type="submit" value="Update Warehouse" />
+  </form>
+</div>
       </div>
     </div>
   </div>
   
-  <div class="container-fluid">
+  <div class="container-fluid lm">
     <div class="row">
       <div class="col-lg-6">
         <table id="productTable" class="table table-primary table-hoover">
@@ -86,7 +98,7 @@
     </div>
   </div>
   
-  <div class="container-fluid bottom">
+  <div class="container-fluid bottom lm">
     <div class="row">
       <div class="col-lg-6">
         <table id="InventoryTable" class="table table-primary table-hoover">

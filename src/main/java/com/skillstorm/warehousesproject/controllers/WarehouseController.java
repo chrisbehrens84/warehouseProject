@@ -1,6 +1,7 @@
 package com.skillstorm.warehousesproject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import com.skillstorm.warehousesproject.models.Warehouse;
@@ -33,5 +34,15 @@ public class WarehouseController {
     @DeleteMapping("/{id}")
     public void deleteWarehouse(@PathVariable("id") Long id) {
         warehouseService.deleteWarehouse(id);
+    }
+
+    @GetMapping("/{id}")
+    public Warehouse getWarehouseById(@PathVariable("id") Long id) throws NotFoundException {
+    return warehouseService.getWarehouseById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Warehouse updateWarehouse(@PathVariable("id") Long id, @RequestBody Warehouse warehouse) throws NotFoundException {
+        return warehouseService.updateWarehouse(id, warehouse);
     }
 }
