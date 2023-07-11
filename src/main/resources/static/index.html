@@ -146,15 +146,15 @@
           <h5 class="aHeader"><strong>Add Inventory to Warehouse</strong></h5>
           <label class="aHeader" for="warehouseSelect">Warehouse : </label>
           <br />
-          <select class="name" id="warehouseSelect"></select>
+          <select class="name" id="warehouseSelect" required></select>
           <br />
           <label for="productSelect">Product :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
           </br>
-          <select type="number" step="0.01" id="productSelect"></select>
+          <select type="text" id="productSelect" required></select>
           <br />
-          <label for="inventoryQuantity">Quantity:</label>
+          <label for="inventoryQuantity">Quantity :</label>
           </br>
-          <input type="number" id="inventoryQuantity" required />
+          <input type="number" id="inventoryQuantity" min="1" max="100" required />
           <br />
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add inventory" />
         </form>

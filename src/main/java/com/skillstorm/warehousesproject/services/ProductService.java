@@ -12,17 +12,13 @@ import com.skillstorm.warehousesproject.repositories.ProductRepository;
 
 
 
-
-
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    ProductRepository productRepository;
+    
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
