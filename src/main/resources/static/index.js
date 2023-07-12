@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("productForm").addEventListener("submit", function (event) {
       event.preventDefault();
-      addInventory();
+      addProduct();
   });
 
   document.getElementById("inventoryForm").addEventListener("submit", function (event) {
@@ -235,7 +235,9 @@ async function loadProducts() {
                 .then(() => {
                   // Reload the warehouses and the dropdown function to remove the product from the dropdown
                   loadProducts();
+                  loadWarehouses();
                   addDropdown()
+                  loadInventory();
                 })
                 .catch(error => {
                   console.error("Error deleting product:", error);
@@ -292,6 +294,7 @@ console.log(updatePrice)
 
       loadProducts();
       loadWarehouses();
+      loadInventory();
     })
     .catch(error => {
       console.error("Error updating product:", error);
@@ -310,6 +313,8 @@ function deleteProduct(productId) {
       }
     })
       .then(() => {
+        loadProducts();
+        loadWarehouses();
         loadProducts();
       })
       .catch(error => {
@@ -352,8 +357,10 @@ function addInventory() {
             })
               .then(() => {
                 document.getElementById("inventoryQuantity").value = "";
-                loadInventory();
+                loadProducts();
                 addDropdown();
+                loadInventory();
+            
                 alert("Inventory has been added")
               });
             } 
@@ -389,7 +396,7 @@ async function loadInventory() {
         updateButton.addEventListener("click", () => {
           // Perform update logic for the warehouse
           console.log("Update button clicked for inventory:", inventory);
-        
+          populateUpdateInventoryForm(inventory);
         });
         
     
@@ -401,6 +408,9 @@ async function loadInventory() {
           console.log("Delete button clicked for inventory:", inventory);
           console.log(inventory[0]);
           deleteInventory(inventory);
+          loadProducts()
+          loadWarehouses();
+          loadInventory();
         });
         
         actionsCell.appendChild(updateButton);
@@ -418,6 +428,62 @@ async function loadInventory() {
       console.error("Error loading inventory:", error);
     });
 }
+
+function populateUpdateInventoryForm(inventory) {
+  // Populate the form with inventory data
+  console.log(inventory)
+  document.getElementById("updateId").value =inventory[0];
+  document.getElementById("updateWarehouseSelect").value = inventory[2];
+  document.getElementById("updateProductSelect").value = inventory[4];
+  document.getElementById("UpdateInventoryQuantity").value = inventory[5];
+  document.getElementById("updateInventoryForms").style.display = "";
+  document.getElementById("addInventoryForm").style.display = "none";
+}
+
+
+let updateDeleteButton = document.getElementById("cancelInventoryUpdateButton");
+updateDeleteButton.addEventListener("click", () => {
+  document.getElementById("updateInventoryForms").style.display = "none";
+  document.getElementById("addInventoryForm").style.display ="";
+});
+
+// Add event listener to the inventory update form submit button
+document.getElementById("updateInventoryForm").addEventListener("submit", handleUpdateInventoryFormSubmit);
+function handleUpdateInventoryFormSubmit(event) {
+  event.preventDefault();
+  
+  // Retrieve the updated values from the form
+  let updateId =  document.getElementById("updateId").value
+  let warehouseId = document.getElementById("updateWarehouseSelect").value;
+  let productId = document.getElementById("updateProductSelect").value;
+  let quantity = document.getElementById("UpdateInventoryQuantity").value;
+
+  // Send a PUT request to update the inventory
+  if(quantity > 0 && quantity < 101){
+  fetch(`/inventory/${updateId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({quantity})
+  })
+    .then(() => {
+      // Hide the update form and display the inventory table
+      document.getElementById("updateInventoryForms").style.display = "none";
+      document.getElementById("addInventoryForm").style.display = "";
+      
+      // Reload the inventory table after update
+      loadProducts()
+      loadWarehouses();
+      loadInventory();
+    })
+    .catch(error => {
+      console.error("Error updating inventory:", error);
+    });
+  }else {
+    alert("quantity can't be 0, Use delete button")
+  }
+  }
 
 
 function deleteInventory(inventoryId) {
@@ -485,6 +551,7 @@ function deleteInventory(inventoryId) {
         productOption.value = product.id;
         productOption.innerText = `${product.name} - $${product.price}`;
         productSelect.appendChild(productOption);
+        loadInventory();
       });
     })
     .catch(error => {
@@ -500,4 +567,24 @@ function deleteInventory(inventoryId) {
 
 
 
-  
+  // Add a new product using the API
+function addProduct() {
+  let productName = document.getElementById("productName").value;
+  let productPrice = document.getElementById("productPrice").value;
+
+  fetch("/products", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name: productName, price: parseFloat(productPrice) })
+  })
+  .then(() => {
+      document.getElementById("productName").value = "";
+      document.getElementById("productPrice").value = "";
+      loadProducts();
+      loadInventory();
+      loadWarehouses();
+      addDropdown();
+  });
+}

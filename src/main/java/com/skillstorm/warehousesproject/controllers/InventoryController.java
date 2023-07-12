@@ -2,9 +2,12 @@ package com.skillstorm.warehousesproject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.skillstorm.warehousesproject.models.Inventory;
+import com.skillstorm.warehousesproject.models.Product;
 import com.skillstorm.warehousesproject.services.InventoryService;
 
 import java.util.List;
@@ -39,11 +42,24 @@ public class InventoryController {
 
     @DeleteMapping("/{id}")
     public void deleteInventory(@PathVariable("id") Long inventoryId) throws NotFoundException {
-            System.out.println(inventoryId);
         inventoryService.deleteInventory(inventoryId);
+    }
+
+    @GetMapping("/{id}")
+    public Inventory getInventory(@PathVariable("id") Long id) throws NotFoundException {
+    return inventoryService.getInventory(id);
+    }
+
+    @PutMapping("/{id}")
+    public Inventory updateProduct(@PathVariable("id") Long id, @RequestBody Inventory inventory ) throws NotFoundException {
+        System.out.println("WTF");
+        return inventoryService.updateInventory(id, inventory);
+    }
+
+
 
 }
 
-}
+
 
 

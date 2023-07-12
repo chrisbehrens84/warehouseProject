@@ -78,6 +78,14 @@
   border: 1px solid black;
 }
 
+#updateInventoryForm{
+  background-color: lightcoral;
+  padding: 10px;
+  margin-left: 50%;
+  margin-top: 30px;
+  border: 1px solid black;
+}
+
 .ubutton{
   margin-top: 10px;
   width: 80px;
@@ -90,6 +98,8 @@
     display: block;
 
   } 
+
+  
 
   .aHeader {
     text-align: center;

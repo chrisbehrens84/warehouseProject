@@ -53,4 +53,30 @@ public class InventoryService {
         inventoryRepository.deleteById(id);
     }
 
+
+    public Inventory getInventory(Long id) throws NotFoundException {
+        return inventoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException());
+    }
+    
+
+
+    // public Inventory updateInventory(Long id, Inventory updatedInventory) throws NotFoundException {
+    // Inventory existingInventory = inventoryRepository.findById(id)
+    //         .orElseThrow(() -> new NotFoundException());
+
+    // existingInventory.setWarehouse(updatedInventory.getWarehouse());
+    // existingInventory.setProduct(updatedInventory.getProduct());
+    // existingInventory.setQuantity(updatedInventory.getQuantity());
+
+    // return inventoryRepository.save(existingInventory);
+    public Inventory updateInventory(Long id, Inventory updatedInventory) throws NotFoundException {
+        Inventory existingInventory = inventoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException());
+
+                existingInventory.setQuantity(updatedInventory.getQuantity());
+
+        return inventoryRepository.save(existingInventory);
+    }
+
 }

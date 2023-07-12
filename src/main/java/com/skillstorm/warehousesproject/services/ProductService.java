@@ -7,7 +7,6 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.skillstorm.warehousesproject.models.Product;
-import com.skillstorm.warehousesproject.models.Warehouse;
 import com.skillstorm.warehousesproject.repositories.ProductRepository;
 
 
