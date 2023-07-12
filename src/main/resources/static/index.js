@@ -85,6 +85,7 @@ async function loadWarehouses() {
                   // Reload the warehouses after delete
                   loadWarehouses();
                   addDropdown()
+                  loadInventory()
                 })
                 .catch(error => {
                   console.error("Error deleting warehouse:", error);
@@ -191,7 +192,7 @@ async function loadProducts() {
         
 
         function populateUpdateProductForm(product) {
-          console.log(product.name)
+          
           // Populate the form with product name and price
           document.getElementById("updateProductName").value = product.name;
           document.getElementById("updatePrice").value = product.price;
@@ -214,10 +215,37 @@ async function loadProducts() {
         deleteButton.innerText = "Delete";
         deleteButton.classList.add("btn", "btn-primary", "delete-button");
         deleteButton.addEventListener("click", () => {
-          // Perform delete logic for the product
+          // delete logic for the warehouse
           console.log("Delete button clicked for product:", product);
-          deleteProduct(product.id);
+          // delete logic for the warehouse
+            // check to see if warehouse has inventory
+          if (product.inventories.length > 0){
+            alert("Cannot Delete, " + product.name +  " is in inventory")
+          }
+          else {
+            // Prompt for confirmation before deleting
+            if (confirm("Are you sure you want to delete this product?")) {
+              // Delete the warehouse
+              fetch(`/products/${product.id}`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              })
+                .then(() => {
+                  // Reload the warehouses and the dropdown function to remove the product from the dropdown
+                  loadProducts();
+                  loadWarehouses();
+                  addDropdown()
+                  loadInventory();
+                })
+                .catch(error => {
+                  console.error("Error deleting product:", error);
+                });
+              }
+            }
         });
+        
         
         actionsCell.appendChild(updateButton);
         actionsCell.appendChild(deleteButton);
@@ -233,7 +261,11 @@ async function loadProducts() {
       console.error("Error loading products:", error);
     });
 
-
+    let updateDeleteButton = document.getElementById("cancelProductUpdateButton");
+    updateDeleteButton.addEventListener("click", () => {
+      document.getElementById("updateProductContainer").style.display = "none";
+      document.getElementById("productFormContainer").style.display ="";
+    });
 
     document.getElementById("updateProduct").addEventListener("submit", handleUpdateProductFormSubmit);
 }
@@ -262,6 +294,7 @@ console.log(updatePrice)
 
       loadProducts();
       loadWarehouses();
+      loadInventory();
     })
     .catch(error => {
       console.error("Error updating product:", error);
@@ -281,6 +314,8 @@ function deleteProduct(productId) {
     })
       .then(() => {
         loadProducts();
+        loadWarehouses();
+        loadProducts();
       })
       .catch(error => {
         console.error("Error deleting product:", error);
@@ -291,122 +326,50 @@ function deleteProduct(productId) {
 
 
 
-/////////////////// Add a new product using the API////////////////////////////////////////////
-function addProduct() {
-  let productName = document.getElementById("productName").value;
-  let productPrice = document.getElementById("productPrice").value;
+/////////////////// Add a new product//////////////////////////////////////////////////////////
+function addInventory() {
+  let warehouseId = document.getElementById("warehouseSelect").value;
+  let productId = document.getElementById("productSelect").value;
+  let quantity = document.getElementById("inventoryQuantity").value;
 
-  fetch("/products", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name: productName, price: parseFloat(productPrice) })
-  })
-      .then(() => {
-          document.getElementById("productName").value = "";
-          document.getElementById("productPrice").value = "";
-          loadProducts();
+  // Perform a check if the inventory item already exists
+  fetch(`/inventory`)
+    .then(response => response.json())
+    .then(data => {
+      let addProduct = "yes";
+      for(i=0; i < data.length; i++){
+        if(data[i][1] == productId && data[i][3] == warehouseId){
+          alert("Product is already in Inventory, please use update")
+          addProduct = "no"
+          addDropdown();
+          document.getElementById("inventoryQuantity").value = "";
+          break;
+
+        }
+      }  
+        if(addProduct == "yes"){
+            // Inventory item does not exist, proceed with adding it
+            fetch(`/inventory/add?warehouseId=${warehouseId}&productId=${productId}&quantity=${quantity}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              }
+            })
+              .then(() => {
+                document.getElementById("inventoryQuantity").value = "";
+                loadProducts();
+                addDropdown();
+                loadInventory();
+            
+                alert("Inventory has been added")
+              });
+            } 
+        
       });
 }
 
 
 
-
-// async function loadProducts() {
-//   await fetch("/products")
-//     .then(response => response.json())
-//     .then(data => {
-//       let productTableBody = document.getElementById("productTableBody");
-//       productTableBody.innerHTML = "";
-//       data.forEach(product => {
-//         let row = document.createElement("tr");
-//         let productCell = document.createElement("td");
-//         let priceCell = document.createElement("td");
-//         productCell.innerText = product.name;
-//         priceCell.innerText = product.price;
-//         let actionsCell = document.createElement("td");
-        
-//         let updateButton = document.createElement("button");
-//         updateButton.innerText = "Update";
-//         updateButton.classList.add("btn", "btn-primary", "space");
-//         updateButton.addEventListener("click", () => {
-//           // Perform update logic for the warehouse
-//           console.log("Update button clicked for product:", product);
-//           populateUpdateProductForm(product);
-//         });
-        
-    
-//         let deleteButton = document.createElement("button");
-//         deleteButton.innerText = "Delete";
-//         deleteButton.classList.add("btn", "btn-primary", "delete-button");
-//         deleteButton.addEventListener("click", () => {
-//           // delete logic for the warehouse
-//           console.log("Delete button clicked for product:", product);
-//           deleteProduct(product.id);
-//         });
-        
-//         actionsCell.appendChild(updateButton);
-//         actionsCell.appendChild(deleteButton);
-        
-//         row.appendChild(productCell);
-//         row.appendChild(priceCell);
-//         row.appendChild(actionsCell);
-        
-//         productTableBody.appendChild(row);
-//       });
-//     })
-//     .catch(error => {
-//       console.error("Error loading products:", error);
-//     });
-// }
-
-// function populateUpdateProductForm(product) {
-//   // Populate the form with product name and price
-//   document.getElementById("updateProductName").value = product.name;
-//   document.getElementById("updateProductPrice").value = product.price;
-//   document.getElementById("updateProductFormContainer").style.display = "";
-// }
-
-// function updateProduct(productId, updatedProduct) {
-//   fetch(`/products/${productId}`, {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify(updatedProduct)
-//   })
-//     .then(() => {
-//       // Hide the update form and display the product list
-//       document.getElementById("updateProductFormContainer").style.display = "none";
-//       loadProducts();
-//     })
-//     .catch(error => {
-//       console.error("Error updating product:", error);
-//     });
-// }
-// /////////////////////////////////////////////////////////////////////////////
-
-
-// //////////////////////////////Add a new product using the API/////////////////
-// function addProduct() {
-//   let productName = document.getElementById("productName").value;
-//   let productPrice = document.getElementById("productPrice").value;
-
-//   fetch("/products", {
-//       method: "POST",
-//       headers: {
-//           "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({ name: productName, price: parseFloat(productPrice) })
-//   })
-//       .then(() => {
-//           document.getElementById("productName").value = "";
-//           document.getElementById("productPrice").value = "";
-//           loadProducts();
-//       });
-// }
-///////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -423,9 +386,9 @@ async function loadInventory() {
         let productCell = document.createElement("td");
         let quantityCell = document.createElement("td");
         let actionsCell = document.createElement("td");
-        inventoryCell.innerText = inventory[1];
-        productCell.innerText = inventory[2];
-        quantityCell.innerText = inventory[3];
+        inventoryCell.innerText = inventory[2];
+        productCell.innerText = inventory[4];
+        quantityCell.innerText = inventory[5];
         
         let updateButton = document.createElement("button");
         updateButton.innerText = "Update";
@@ -433,7 +396,7 @@ async function loadInventory() {
         updateButton.addEventListener("click", () => {
           // Perform update logic for the warehouse
           console.log("Update button clicked for inventory:", inventory);
-        
+          populateUpdateInventoryForm(inventory);
         });
         
     
@@ -443,7 +406,11 @@ async function loadInventory() {
         deleteButton.addEventListener("click", () => {
           // Perform delete logic for the warehouse
           console.log("Delete button clicked for inventory:", inventory);
-           
+          console.log(inventory[0]);
+          deleteInventory(inventory);
+          loadProducts()
+          loadWarehouses();
+          loadInventory();
         });
         
         actionsCell.appendChild(updateButton);
@@ -462,25 +429,102 @@ async function loadInventory() {
     });
 }
 
+function populateUpdateInventoryForm(inventory) {
+  // Populate the form with inventory data
+  console.log(inventory)
+  document.getElementById("updateId").value =inventory[0];
+  document.getElementById("updateWarehouseSelect").value = inventory[2];
+  document.getElementById("updateProductSelect").value = inventory[4];
+  document.getElementById("UpdateInventoryQuantity").value = inventory[5];
+  document.getElementById("updateInventoryForms").style.display = "";
+  document.getElementById("addInventoryForm").style.display = "none";
+}
+
+
+let updateDeleteButton = document.getElementById("cancelInventoryUpdateButton");
+updateDeleteButton.addEventListener("click", () => {
+  document.getElementById("updateInventoryForms").style.display = "none";
+  document.getElementById("addInventoryForm").style.display ="";
+});
+
+// Add event listener to the inventory update form submit button
+document.getElementById("updateInventoryForm").addEventListener("submit", handleUpdateInventoryFormSubmit);
+function handleUpdateInventoryFormSubmit(event) {
+  event.preventDefault();
+  
+  // Retrieve the updated values from the form
+  let updateId =  document.getElementById("updateId").value
+  let warehouseId = document.getElementById("updateWarehouseSelect").value;
+  let productId = document.getElementById("updateProductSelect").value;
+  let quantity = document.getElementById("UpdateInventoryQuantity").value;
+
+  // Send a PUT request to update the inventory
+  if(quantity > 0 && quantity < 101){
+  fetch(`/inventory/${updateId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({quantity})
+  })
+    .then(() => {
+      // Hide the update form and display the inventory table
+      document.getElementById("updateInventoryForms").style.display = "none";
+      document.getElementById("addInventoryForm").style.display = "";
+      
+      // Reload the inventory table after update
+      loadProducts()
+      loadWarehouses();
+      loadInventory();
+    })
+    .catch(error => {
+      console.error("Error updating inventory:", error);
+    });
+  }else {
+    alert("quantity can't be 0, Use delete button")
+  }
+  }
+
+
+function deleteInventory(inventoryId) {
+  console.log(inventoryId[0])
+  if (confirm("Are you sure you want to delete this inventory item?")) {
+    console.log(inventoryId[0])
+    fetch(`/inventory/${inventoryId[0]}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(() => {
+        // Reload the inventory table after deleting
+        loadInventory();
+      })
+      .catch(error => {
+        console.error("Error deleting inventory item:", error);
+      });
+  }
+}
 
 
 
-
-
-
-
+///////////////////////////////Used to proide the dropdown options to the add inventory form////
  function addDropdown() {
   let warehouseSelect = document.getElementById("warehouseSelect");
   let productSelect = document.getElementById("productSelect");
-  // let quantity = document.getElementById("inventoryQuantity").value;
-
   // Fetch warehouse options
    fetch("/warehouses")
     .then(response => response.json())
     .then(data => {
       warehouseSelect.innerHTML = "";
+      let warehouseDefaultOption = document.createElement("option");
+      warehouseDefaultOption.value = "";
+      warehouseDefaultOption.innerText = "Select Warehouse";
+      warehouseDefaultOption.disabled = true; // Add the disabled attribute
+      warehouseDefaultOption.selected = true; // Optionally, select the default option
+      warehouseSelect.appendChild(warehouseDefaultOption);
+
       data.forEach(warehouse => {
-        // console.log(warehouse)
         let warehouseOption = document.createElement("option");
         warehouseOption.value = warehouse.id;
         warehouseOption.innerText = `${warehouse.name} - ${warehouse.location}`;
@@ -490,42 +534,57 @@ async function loadInventory() {
     .catch(error => {
       console.error("Error loading warehouses:", error);
     });
-
+    
   // Fetch product options
   fetch("/products")
     .then(response => response.json())
     .then(data => {
       productSelect.innerHTML = "";
+      let productDefaultOption = document.createElement("option");
+      productDefaultOption.value = "";
+      productDefaultOption.innerText = "Select Product";
+      productDefaultOption.disabled = true; 
+      productDefaultOption.selected = true;
+      productSelect.appendChild(productDefaultOption)
       data.forEach(product => {
         let productOption = document.createElement("option");
         productOption.value = product.id;
         productOption.innerText = `${product.name} - $${product.price}`;
         productSelect.appendChild(productOption);
+        loadInventory();
       });
     })
     .catch(error => {
       console.error("Error loading products:", error);
     });
+
+    
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
  
   
-  function addInventory() {
-    let warehouseId = document.getElementById("warehouseSelect").value;
-    let productId = document.getElementById("productSelect").value;
-    let quantity = document.getElementById("inventoryQuantity").value;
-  
-    fetch(`/inventory/add?warehouseId=${warehouseId}&productId=${productId}&quantity=${quantity}`, {
+
+
+
+  // Add a new product using the API
+function addProduct() {
+  let productName = document.getElementById("productName").value;
+  let productPrice = document.getElementById("productPrice").value;
+
+  fetch("/products", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(() => {
-        document.getElementById("inventoryQuantity").value = "";
-        loadInventory();
-      });
-  }
-
-
-
-  
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name: productName, price: parseFloat(productPrice) })
+  })
+  .then(() => {
+      document.getElementById("productName").value = "";
+      document.getElementById("productPrice").value = "";
+      loadProducts();
+      loadInventory();
+      loadWarehouses();
+      addDropdown();
+  });
+}

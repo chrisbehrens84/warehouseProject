@@ -14,12 +14,13 @@ import com.skillstorm.warehousesproject.services.ProductService;
 @RequestMapping("/products")
 public class ProductController {
 
-    private final ProductService productService;
+
 
     @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    ProductService productService;
+    // public ProductController(ProductService productService) {
+    //     this.productService = productService;
+    // }
 
     @GetMapping
     public List<Product> getAllProducts() {

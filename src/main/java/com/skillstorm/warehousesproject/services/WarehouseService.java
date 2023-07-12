@@ -14,12 +14,9 @@ import com.skillstorm.warehousesproject.repositories.WarehouseRepository;
 @Service
 public class WarehouseService {
 
-    private final WarehouseRepository warehouseRepository;
-
     @Autowired
-    public WarehouseService(WarehouseRepository warehouseRepository) {
-        this.warehouseRepository = warehouseRepository;
-    }
+    WarehouseRepository warehouseRepository;
+    
 
     public List<Warehouse> getAllWarehouses() {
         return warehouseRepository.findAll();
