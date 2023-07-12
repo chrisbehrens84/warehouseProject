@@ -1,3 +1,7 @@
+
+// const URL = "http://localhost:8080/"
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
   //call these functions on page load
@@ -143,6 +147,7 @@ function handleUpdateFormSubmit(event) {
       // Reload the warehouses after update
       loadWarehouses();
       loadInventory()
+      addDropdown();
     })
     .catch(error => {
       console.error("Error updating warehouse:", error);
@@ -338,7 +343,9 @@ function addInventory() {
     .then(data => {
       let addProduct = "yes";
       for(i=0; i < data.length; i++){
-        if(data[i][1] == productId && data[i][3] == warehouseId){
+        console.log(data)
+        console.log(data[i][1] + " " +productId + data[i][3] + " "  + warehouseId)
+        if(data[i][1] ==  warehouseId && data[i][3] == productId){
           alert("Product is already in Inventory, please use update")
           addProduct = "no"
           addDropdown();
@@ -359,6 +366,7 @@ function addInventory() {
                 document.getElementById("inventoryQuantity").value = "";
                 loadProducts();
                 addDropdown();
+                loadWarehouses();
                 loadInventory();
             
                 alert("Inventory has been added")
@@ -552,6 +560,8 @@ function deleteInventory(inventoryId) {
         productOption.innerText = `${product.name} - $${product.price}`;
         productSelect.appendChild(productOption);
         loadInventory();
+        loadProducts();
+        loadProducts();
       });
     })
     .catch(error => {
