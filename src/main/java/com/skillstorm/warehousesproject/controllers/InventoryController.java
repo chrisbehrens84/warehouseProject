@@ -17,7 +17,7 @@ import javax.annotation.Generated;
 
 @RestController
 @RequestMapping("/inventory")
-@CrossOrigin("http://127.0.0.1:5500/")
+@CrossOrigin("*")
 public class InventoryController {
 
     @Autowired
@@ -36,10 +36,6 @@ public class InventoryController {
     }
 
 
-    // @GetMapping("/{index}")
-    // public Object[] getInventory(@PathVariable("index") Long index) throws NotFoundException {
-    //     return inventoryService.getInventory(index);
-    // }
 
     @DeleteMapping("/{id}")
     public void deleteInventory(@PathVariable("id") Long inventoryId) throws NotFoundException {
@@ -53,7 +49,6 @@ public class InventoryController {
 
     @PutMapping("/{id}")
     public Inventory updateProduct(@PathVariable("id") Long id, @RequestBody Inventory inventory ) throws NotFoundException {
-        System.out.println("WTF");
         return inventoryService.updateInventory(id, inventory);
     }
 

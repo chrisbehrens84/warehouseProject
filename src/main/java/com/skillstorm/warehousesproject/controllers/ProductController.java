@@ -12,7 +12,7 @@ import com.skillstorm.warehousesproject.services.ProductService;
 
 @RestController
 @RequestMapping("/products")
-@CrossOrigin("http://127.0.0.1:5500/")
+@CrossOrigin("*")
 public class ProductController {
 
 
