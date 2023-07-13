@@ -5,6 +5,11 @@
     justify-content: center;
   }
 
+  .header {
+    padding-left: 10px;
+    padding-right:10px;
+  }
+
   th.Wheader {
     text-align: center;
   }

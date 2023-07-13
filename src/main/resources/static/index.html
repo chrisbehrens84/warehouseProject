@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Warehouse Inventory Management</title>
+  <link rel="icon" type="image/x-icon" href="ball2.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="stylesheet" href="index.css" />
@@ -15,8 +16,12 @@
 
   <nav class="navbar" style="background-color: #e3f2fd;">
     <!-- Navbar content -->
+    <img src="ball2.png" alt="GolfBall" width="50" height="50">
     <h1 class="header">Golf Ball Inventory Management</h1>
+    <img src="ball2.png" alt="Golfball" width="50" height="50">
   </nav>
+
+  <!--Warehouse Table----->
   <div class="container-fluid lm">
     <div class="row">
       <div class="col-lg-6">
@@ -34,6 +39,8 @@
           <tbody id="warehouseTableBody"></tbody>
         </table>
       </div>
+
+    <!--Warehouse Form----->  
       <div class="col-lg-4" id="warehouseFormContainer">
         <form id="warehouseForm">
           <h5 class="aHeader"><strong>Add Warehouse</strong></h5>
@@ -48,6 +55,8 @@
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add Warehouse" />
         </form>
       </div>
+
+      <!--Warehouse UpdateForm----->  
         <div class="col-lg-4" id="updateFormContainer" style="display: none;">
           <form id="updateForm">
             <h5 class="aHeader"><strong>Update Warehouse</strong></h5>
@@ -70,6 +79,7 @@
     </div>
   </div>
 
+  <!------------Product Table----------->  
   <div class="container-fluid lm">
     <div class="row">
       <div class="col-lg-6">
@@ -87,6 +97,8 @@
           <tbody id="productTableBody"></tbody>
         </table>
       </div>
+
+      <!------------Product Form----------->  
       <div class="col-lg-4" id="productFormContainer">
         <form id="productForm">
           <h5 class="aHeader"><strong>Add Product</strong></h5>
@@ -97,11 +109,12 @@
           <label for="productPrice">Price:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
           </br>
           <input type="number" min="0" step="0.01" id="productPrice" required />
-
           <br />
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add product" />
         </form>
       </div>
+
+      <!------------Product Update Form----------->  
       <div class="col-lg-4" id="updateProductContainer" style="display: none;">
         <form id="updateProduct">
           <h5 class="aHeader"><strong>Update Product</strong></h5>
@@ -123,6 +136,7 @@
     </div>
   </div>
 
+  <!----------Inventory Table------------------->
   <div class="container-fluid bottom lm">
     <div class="row">
       <div class="col-lg-6">
@@ -141,6 +155,8 @@
           <tbody id="inventoryTableBody"></tbody>
         </table>
       </div>
+
+     <!----------Inventory Form------------------->
       <div class="col-lg-4" id="addInventoryForm">
         <form id="inventoryForm">
           <h5 class="aHeader"><strong>Add Inventory to Warehouse</strong></h5>
@@ -159,6 +175,8 @@
           <input class="btn btn-primary aHeader wbutton" type="submit" value="Add inventory" />
         </form>
       </div>
+
+       <!----------Inventory Update Form------------------->
       <div class="col-lg-4" id="updateInventoryForms" style="display: none;">
         <form id="updateInventoryForm">
           <h5 class="aHeader"><strong>Add Inventory to Warehouse</strong></h5>
