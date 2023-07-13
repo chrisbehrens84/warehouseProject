@@ -86,7 +86,7 @@ async function loadWarehouses() {
                 }
               })
                 .then(() => {
-                  // Reload the warehouses after delete
+                  // Reload the warehouses and  the add dropdown so the new warehouse is added in the dropdowns
                   loadWarehouses();
                   addDropdown()
                   //loadInventory()
@@ -514,6 +514,8 @@ function deleteInventory(inventoryId) {
       .then(() => {
         // Reload the inventory table after deleting
         loadInventory();
+        loadWarehouses();
+        loadProducts();
       })
       .catch(error => {
         console.error("Error deleting inventory item:", error);
