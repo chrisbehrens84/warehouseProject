@@ -371,10 +371,10 @@ function addInventory() {
                 document.getElementById("inventoryQuantity").value = "";
                 // loadWarehouses();
              
-                setTimeout(loadProducts, 3000); // Delay loadProducts() by 1 second
-                setTimeout(loadWarehouses, 3000); // Delay loadWarehouses() by 1 second
+                setTimeout(loadProducts, 1000); // Delay loadProducts() by 1 second
+                setTimeout(loadWarehouses, 1000); // Delay loadWarehouses() by 1 second
                 addDropdown();
-                setTimeout(loadInventory,1000);
+                setTimeout(loadInventory,200);
             
                 //alert("Inventory has been added")
               });
