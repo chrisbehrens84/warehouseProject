@@ -12,16 +12,14 @@ import com.skillstorm.warehousesproject.services.ProductService;
 
 @RestController
 @RequestMapping("/products")
-@CrossOrigin("http://127.0.0.1:5500/")
+@CrossOrigin("http://127.0.0.1:5500/src/main/resources/static/index.html")
 public class ProductController {
 
 
 
     @Autowired
     ProductService productService;
-    // public ProductController(ProductService productService) {
-    //     this.productService = productService;
-    // }
+ 
 
     @GetMapping
     public List<Product> getAllProducts() {

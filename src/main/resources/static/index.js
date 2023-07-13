@@ -1,5 +1,5 @@
 
-// const URL = "http://localhost:8080/"
+const URL = "http://localhost:8080"
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 ////////////////////////////////Warehouse////////////////////////////////////
 async function loadWarehouses() {
-  await fetch("/warehouses")
+  await fetch(URL + '/warehouses')
     .then(response => response.json())
     .then(data => {
       let warehouseTableBody = document.getElementById("warehouseTableBody");
@@ -79,7 +79,7 @@ async function loadWarehouses() {
             // Prompt for confirmation before deleting
             if (confirm("Are you sure you want to delete this warehouse?")) {
               // Delete the warehouse
-              fetch(`/warehouses/${warehouse.id}`, {
+              fetch(URL + `/warehouses/${warehouse.id}`, {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json"
@@ -89,7 +89,7 @@ async function loadWarehouses() {
                   // Reload the warehouses after delete
                   loadWarehouses();
                   addDropdown()
-                  loadInventory()
+                  //loadInventory()
                 })
                 .catch(error => {
                   console.error("Error deleting warehouse:", error);
@@ -132,7 +132,7 @@ function handleUpdateFormSubmit(event) {
   let warehouseLocation = document.getElementById("updateWarehouseLocation").value;
 
   // Send a PUT request to update the warehouse
-  fetch(`/warehouses/${warehouseId}`, {
+  fetch(URL +`/warehouses/${warehouseId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -161,7 +161,7 @@ function addWarehouse() {
   let warehouseName = document.getElementById("warehouseName").value;
   let warehouseLocation = document.getElementById("warehouseLocation").value;
 
-  fetch("/warehouses", {
+  fetch(URL +"/warehouses", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -182,9 +182,10 @@ function addWarehouse() {
 
 /////////////////////////////LoadProduct//////////////////////////////////////////
 async function loadProducts() {
-  await fetch("/products")
+  await fetch(URL+"/products")
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       let productTableBody = document.getElementById("productTableBody");
       productTableBody.innerHTML = "";
       data.forEach(product => {
@@ -224,6 +225,9 @@ async function loadProducts() {
           console.log("Delete button clicked for product:", product);
           // delete logic for the warehouse
             // check to see if warehouse has inventory
+            
+            console.log(product)
+            console.log(product.inventories.length)
           if (product.inventories.length > 0){
             alert("Cannot Delete, " + product.name +  " is in inventory")
           }
@@ -231,7 +235,7 @@ async function loadProducts() {
             // Prompt for confirmation before deleting
             if (confirm("Are you sure you want to delete this product?")) {
               // Delete the warehouse
-              fetch(`/products/${product.id}`, {
+              fetch(URL +`/products/${product.id}`, {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json"
@@ -240,9 +244,9 @@ async function loadProducts() {
                 .then(() => {
                   // Reload the warehouses and the dropdown function to remove the product from the dropdown
                   loadProducts();
-                  loadWarehouses();
+                  //loadWarehouses();
                   addDropdown()
-                  loadInventory();
+                  //loadInventory();
                 })
                 .catch(error => {
                   console.error("Error deleting product:", error);
@@ -285,7 +289,7 @@ console.log(productId)
 let updateProduct = document.getElementById("updateProductName").value;
 let updatePrice = document.getElementById("updatePrice").value;
 console.log(updatePrice)
-  fetch(`/products/${productId}`, {
+  fetch(URL + `/products/${productId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -298,8 +302,9 @@ console.log(updatePrice)
       document.getElementById("productFormContainer").style.display ="";
 
       loadProducts();
-      loadWarehouses();
+      //loadWarehouses();
       loadInventory();
+      addDropdown();
     })
     .catch(error => {
       console.error("Error updating product:", error);
@@ -311,7 +316,7 @@ console.log(updatePrice)
 //////////////////////Delete a Product///////////////////////////////////////////////////
 function deleteProduct(productId) {
   if (confirm("Are you sure you want to delete this product?")) {
-    fetch(`/products/${productId}`, {
+    fetch(URL +`/products/${productId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -319,8 +324,8 @@ function deleteProduct(productId) {
     })
       .then(() => {
         loadProducts();
-        loadWarehouses();
-        loadProducts();
+        //loadWarehouses();
+        addDropdown();
       })
       .catch(error => {
         console.error("Error deleting product:", error);
@@ -338,7 +343,7 @@ function addInventory() {
   let quantity = document.getElementById("inventoryQuantity").value;
 
   // Perform a check if the inventory item already exists
-  fetch(`/inventory`)
+  fetch(URL +`/inventory`)
     .then(response => response.json())
     .then(data => {
       let addProduct = "yes";
@@ -348,7 +353,7 @@ function addInventory() {
         if(data[i][1] ==  warehouseId && data[i][3] == productId){
           alert("Product is already in Inventory, please use update")
           addProduct = "no"
-          addDropdown();
+          //addDropdown();
           document.getElementById("inventoryQuantity").value = "";
           break;
 
@@ -356,7 +361,7 @@ function addInventory() {
       }  
         if(addProduct == "yes"){
             // Inventory item does not exist, proceed with adding it
-            fetch(`/inventory/add?warehouseId=${warehouseId}&productId=${productId}&quantity=${quantity}`, {
+            fetch(URL + `/inventory/add?warehouseId=${warehouseId}&productId=${productId}&quantity=${quantity}`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
@@ -364,12 +369,14 @@ function addInventory() {
             })
               .then(() => {
                 document.getElementById("inventoryQuantity").value = "";
-                loadProducts();
+                // loadWarehouses();
+             
+                setTimeout(loadProducts, 1000); // Delay loadProducts() by 1 second
+                setTimeout(loadWarehouses, 1000); // Delay loadWarehouses() by 1 second
                 addDropdown();
-                loadWarehouses();
-                loadInventory();
+                setTimeout(loadInventory,200);
             
-                alert("Inventory has been added")
+                //alert("Inventory has been added")
               });
             } 
         
@@ -383,7 +390,7 @@ function addInventory() {
 
 /////////////////////////////////Inventory///////////////////////////////////
 async function loadInventory() {
-  await fetch("/inventory")
+  await fetch(URL + "/inventory")
     .then(response => response.json())
     .then(data => {
       let inventoryTableBody = document.getElementById("inventoryTableBody");
@@ -416,9 +423,9 @@ async function loadInventory() {
           console.log("Delete button clicked for inventory:", inventory);
           console.log(inventory[0]);
           deleteInventory(inventory);
-          loadProducts()
-          loadWarehouses();
-          loadInventory();
+          //loadProducts()
+          //loadWarehouses();
+          //loadInventory();
         });
         
         actionsCell.appendChild(updateButton);
@@ -468,7 +475,7 @@ function handleUpdateInventoryFormSubmit(event) {
 
   // Send a PUT request to update the inventory
   if(quantity > 0 && quantity < 101){
-  fetch(`/inventory/${updateId}`, {
+  fetch(URL +`/inventory/${updateId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -498,7 +505,7 @@ function deleteInventory(inventoryId) {
   console.log(inventoryId[0])
   if (confirm("Are you sure you want to delete this inventory item?")) {
     console.log(inventoryId[0])
-    fetch(`/inventory/${inventoryId[0]}`, {
+    fetch(URL +`/inventory/${inventoryId[0]}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -521,7 +528,7 @@ function deleteInventory(inventoryId) {
   let warehouseSelect = document.getElementById("warehouseSelect");
   let productSelect = document.getElementById("productSelect");
   // Fetch warehouse options
-   fetch("/warehouses")
+   fetch(URL + '/warehouses')
     .then(response => response.json())
     .then(data => {
       warehouseSelect.innerHTML = "";
@@ -543,8 +550,8 @@ function deleteInventory(inventoryId) {
       console.error("Error loading warehouses:", error);
     });
     
-  // Fetch product options
-  fetch("/products")
+  //Get and assign product options
+  fetch(URL+"/products")
     .then(response => response.json())
     .then(data => {
       productSelect.innerHTML = "";
@@ -559,9 +566,9 @@ function deleteInventory(inventoryId) {
         productOption.value = product.id;
         productOption.innerText = `${product.name} - $${product.price}`;
         productSelect.appendChild(productOption);
-        loadInventory();
-        loadProducts();
-        loadProducts();
+        // loadInventory();
+        // loadProducts();
+    
       });
     })
     .catch(error => {
@@ -582,7 +589,7 @@ function addProduct() {
   let productName = document.getElementById("productName").value;
   let productPrice = document.getElementById("productPrice").value;
 
-  fetch("/products", {
+  fetch(URL+"/products", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -593,8 +600,8 @@ function addProduct() {
       document.getElementById("productName").value = "";
       document.getElementById("productPrice").value = "";
       loadProducts();
-      loadInventory();
-      loadWarehouses();
+      //loadInventory();
+      //loadWarehouses();
       addDropdown();
   });
 }

@@ -1,12 +1,12 @@
 package com.skillstorm.warehousesproject.services;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 import com.skillstorm.warehousesproject.models.Inventory;
 import com.skillstorm.warehousesproject.models.Product;
@@ -28,12 +28,13 @@ public class InventoryService {
     @Autowired
     ProductRepository productRepository;
    
-
-    public List<Object[]> getAllInventories() {
+    ///get everything for inventory
+    public List<Object> getAllInventories() {
     return inventoryRepository.findAllInventoryWithNames();
     }
 
-    public Inventory addProductToWarehouse(Long warehouseId, Long productId, int quantity) {
+    //add Inventory
+    public Inventory addProductToInventory(Long warehouseId, Long productId, int quantity) {
         Warehouse warehouse = warehouseRepository.findById(warehouseId)
                 .orElseThrow(() -> new IllegalArgumentException("Warehouse not found"));
 
@@ -48,28 +49,19 @@ public class InventoryService {
         return inventoryRepository.save(inventory);
     }
 
-
+    //delete Inventory
     public void deleteInventory(Long id) throws NotFoundException {
         inventoryRepository.deleteById(id);
     }
 
-
+    //get inventory by Id
     public Inventory getInventory(Long id) throws NotFoundException {
         return inventoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException());
     }
     
 
-
-    // public Inventory updateInventory(Long id, Inventory updatedInventory) throws NotFoundException {
-    // Inventory existingInventory = inventoryRepository.findById(id)
-    //         .orElseThrow(() -> new NotFoundException());
-
-    // existingInventory.setWarehouse(updatedInventory.getWarehouse());
-    // existingInventory.setProduct(updatedInventory.getProduct());
-    // existingInventory.setQuantity(updatedInventory.getQuantity());
-
-    // return inventoryRepository.save(existingInventory);
+    //update inventory
     public Inventory updateInventory(Long id, Inventory updatedInventory) throws NotFoundException {
         Inventory existingInventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException());
